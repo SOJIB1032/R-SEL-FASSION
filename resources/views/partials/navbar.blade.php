@@ -19,8 +19,8 @@
                             <span class="absolute -top-2 -right-3 bg-brand text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{{ $wishlistCount }}</span>
                         @endif
                     </a>
-                @endauth
-
+               
+              
                 <a href="{{ route('cart.show') }}" class="relative hover:text-brand" title="Cart">
                     🛒 Cart
                     @if($cartCount > 0)
@@ -28,7 +28,7 @@
                     @endif
                 </a>
 
-                @auth
+                
                     <a href="{{ route('account.dashboard') }}" class="hover:text-brand">Hi, {{ Str::before(auth()->user()->name, ' ') }}</a>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
