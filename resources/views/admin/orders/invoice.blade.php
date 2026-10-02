@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Invoice {{ $order->order_number }} - ShopNova</title>
+    <title>Invoice {{ $order->order_number }} - R-SELFASSION</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @media print { .no-print { display: none; } body { -webkit-print-color-adjust: exact; } }
@@ -16,7 +16,7 @@
     <div class="max-w-3xl mx-auto border rounded-xl p-8">
         <div class="flex justify-between items-start mb-8">
             <div>
-                <h1 class="text-2xl font-extrabold text-brand">ShopNova</h1>
+                <h1 class="text-2xl font-extrabold text-brand">R-SELFASSION</h1>
                 <p class="text-xs text-gray-500">Invoice</p>
             </div>
             <div class="text-right text-sm">

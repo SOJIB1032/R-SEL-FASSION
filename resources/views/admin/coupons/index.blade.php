@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Coupons - ShopNova Admin')
+@section('title', 'Coupons - R-SELFASSION Admin')
 @section('page_title', 'Coupons')
 
 @section('content')

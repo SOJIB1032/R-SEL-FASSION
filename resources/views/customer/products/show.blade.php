@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $product->meta_title ?? $product->name.' - ShopNova')
+@section('title', $product->meta_title ?? $product->name.' - R-SELFASSION')
 @section('meta_description', $product->meta_description ?? Str::limit(strip_tags($product->short_description), 155))
 
 @section('content')

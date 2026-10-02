@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Order '.$order->order_number.' - ShopNova')
+@section('title', 'Order '.$order->order_number.' - R-SELFASSION')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-8">

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', ($product->exists ? 'Edit' : 'New').' Product - ShopNova Admin')
+@section('title', ($product->exists ? 'Edit' : 'New').' Product - R-SELFASSION Admin')
 @section('page_title', ($product->exists ? 'Edit' : 'New').' Product')
 
 @section('content')

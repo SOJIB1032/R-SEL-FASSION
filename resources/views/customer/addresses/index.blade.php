@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Saved Addresses - ShopNova')
+@section('title', 'Saved Addresses - R-SELFASSION')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-8">

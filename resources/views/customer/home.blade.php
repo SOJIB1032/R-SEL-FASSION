@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'ShopNova - Shop Smarter, Live Better')
+@section('title', 'R-SELFASSION - Shop Smarter, Live Better')
 
 @section('content')
     <section class="bg-gradient-to-r from-brand to-orange-400 text-white">

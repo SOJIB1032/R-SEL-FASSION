@@ -1,10 +1,10 @@
 <header class="bg-white shadow-sm sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between h-16 gap-4">
-            <a href="{{ route('home') }}" class="text-2xl font-extrabold text-brand tracking-tight">Shop<span class="text-gray-900">Nova</span></a>
+            <a href="{{ route('home') }}" class="text-2xl font-extrabold text-brand tracking-tight">R-SEL<span class="text-gray-900">FASSION</span></a>
 
             <form action="{{ route('products.index') }}" method="GET" class="hidden md:flex flex-1 max-w-xl">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products, brands, SKU..."
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products, brands..."
                        class="w-full border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-brand">
                 <button type="submit" class="bg-brand hover:bg-brand-dark text-white px-4 rounded-r-lg">Search</button>
             </form>

@@ -16,7 +16,7 @@
 
     <aside class="w-64 bg-gray-900 text-gray-300 flex flex-col shrink-0">
         <div class="px-6 py-5 text-xl font-extrabold text-white border-b border-gray-800">
-            Shop<span class="text-brand">Nova</span> <span class="text-xs font-normal text-gray-400 block">Admin Panel</span>
+            R-SEL<span class="text-brand">FASSION</span> <span class="text-xs font-normal text-gray-400 block">Admin Panel</span>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
             @php

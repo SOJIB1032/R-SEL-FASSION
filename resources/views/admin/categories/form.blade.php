@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', ($category->exists ? 'Edit' : 'New').' Category - ShopNova Admin')
+@section('title', ($category->exists ? 'Edit' : 'New').' Category - R-SELFASSION Admin')
 @section('page_title', ($category->exists ? 'Edit' : 'New').' Category')
 
 @section('content')

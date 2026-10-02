@@ -1,7 +1,7 @@
 <footer class="bg-gray-900 text-gray-300 mt-16">
     <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
         <div>
-            <h3 class="text-white text-lg font-bold mb-3">ShopNova</h3>
+            <h3 class="text-white text-lg font-bold mb-3">R-SELFASSION</h3>
             <p>Your modern destination for quality products at honest prices.</p>
         </div>
         <div>
@@ -27,6 +27,6 @@
         </div>
     </div>
     <div class="border-t border-gray-800 text-center text-xs py-4">
-        &copy; {{ date('Y') }} ShopNova. All rights reserved.
+        &copy; {{ date('Y') }} R-SELFASSION. All rights reserved.
     </div>
 </footer>
