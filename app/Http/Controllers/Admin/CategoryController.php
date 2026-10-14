@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,8 +16,10 @@ class CategoryController extends Controller
     public function index(): View
     {
         $categories = Category::withCount('products')->orderBy('sort_order')->paginate(15);
+        $subCategories = SubCategory::with('category')->orderBy('name')->get();
+        $allCategories = Category::orderBy('name')->get();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'subCategories', 'allCategories'));
     }
 
     public function create(): View

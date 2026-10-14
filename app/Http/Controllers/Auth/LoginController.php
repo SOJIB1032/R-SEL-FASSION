@@ -54,6 +54,11 @@ class LoginController extends Controller
 
         RateLimiter::clear($throttleKey);
 
+        if (! $request->user()->is_active) {
+            Auth::logout();
+            return back()->withErrors(['email' => 'This account has been deactivated. Please contact support.'])->onlyInput('email');
+        }
+
         /*
         |--------------------------------------------------------------------------
         | Regenerate session after login

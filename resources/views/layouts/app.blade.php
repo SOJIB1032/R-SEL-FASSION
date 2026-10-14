@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'R-SELFASSION - Shop Smarter')</title>
-    <meta name="description" content="@yield('meta_description', 'R-SELFASSION - your modern online shopping destination.')">
+    <title>@yield('title', 'ShopNova - Shop Smarter')</title>
+    <meta name="description" content="@yield('meta_description', 'ShopNova - your modern online shopping destination.')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { theme: { extend: { colors: { brand: { DEFAULT: '#ff5722', dark: '#e64a19' } } } } }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('head')
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
@@ -28,5 +26,6 @@
     </main>
 
     @include('partials.footer')
+    @stack('scripts')
 </body>
 </html>

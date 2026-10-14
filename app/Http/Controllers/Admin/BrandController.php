@@ -37,6 +37,30 @@ class BrandController extends Controller
         return back()->with('status', 'Brand created.');
     }
 
+
+    public function update(Request $request, Brand $brand): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        $payload = ['name' => $data['name']];
+        if ($brand->name !== $data['name']) {
+            $payload['slug'] = Str::slug($data['name']).'-'.Str::random(4);
+        }
+        if ($request->hasFile('logo')) {
+            if ($brand->logo) {
+                Storage::disk('public')->delete($brand->logo);
+            }
+            $payload['logo'] = $request->file('logo')->store('brands', 'public');
+        }
+
+        $brand->update($payload);
+
+        return back()->with('status', 'Brand updated.');
+    }
+
     public function toggleActive(Brand $brand): RedirectResponse
     {
         $brand->update(['is_active' => ! $brand->is_active]);

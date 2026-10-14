@@ -1,7 +1,7 @@
 <footer class="bg-gray-900 text-gray-300 mt-16">
     <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm">
         <div>
-            <h3 class="text-white text-lg font-bold mb-3">R-SELFASSION</h3>
+            <h3 class="text-white text-lg font-bold mb-3">ShopNova</h3>
             <p>Your modern destination for quality products at honest prices.</p>
         </div>
         <div>
@@ -20,13 +20,15 @@
         </div>
         <div>
             <h4 class="text-white font-semibold mb-3">Newsletter</h4>
-            <form class="flex">
-                <input type="email" placeholder="Your email" class="w-full rounded-l-lg px-3 py-2 text-gray-900 text-sm focus:outline-none">
-                <button type="button" class="bg-brand px-3 rounded-r-lg text-white text-sm">Join</button>
+            <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex">
+                @csrf
+                <input type="email" name="email" required maxlength="255" placeholder="Your email" class="w-full min-w-0 rounded-l-lg px-3 py-2 text-gray-900 text-sm focus:outline-none">
+                <button type="submit" class="bg-brand px-3 rounded-r-lg text-white text-sm">Join</button>
             </form>
+            @error('email')<p class="text-red-300 text-xs mt-2">{{ $message }}</p>@enderror
         </div>
     </div>
     <div class="border-t border-gray-800 text-center text-xs py-4">
-        &copy; {{ date('Y') }} R-SELFASSION. All rights reserved.
+        &copy; {{ date('Y') }} ShopNova. All rights reserved.
     </div>
 </footer>

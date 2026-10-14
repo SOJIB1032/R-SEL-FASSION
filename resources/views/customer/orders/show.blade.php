@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Order '.$order->order_number.' - R-SELFASSION')
+@section('title', 'Order '.$order->order_number.' - ShopNova')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-8">
@@ -56,6 +56,25 @@
                     </div>
                     <p class="font-semibold">৳{{ number_format($item->line_total, 2) }}</p>
                 </div>
+                @if($order->status === 'delivered')
+                    @if($item->review)
+                        <p class="text-xs text-gray-500 mt-2">Review status: {{ ucfirst($item->review->status) }}</p>
+                    @else
+                        <form action="{{ route('account.orders.items.review', [$order, $item]) }}" method="POST" class="mt-3 rounded-lg border p-3 space-y-2">
+                            @csrf
+                            <p class="text-sm font-semibold">Review this product</p>
+                            <label class="block text-xs text-gray-600">Rating</label>
+                            <select name="rating" required class="border rounded-lg px-3 py-2 text-sm">
+                                @for($rating = 5; $rating >= 1; $rating--)
+                                    <option value="{{ $rating }}">{{ $rating }} star{{ $rating > 1 ? 's' : '' }}</option>
+                                @endfor
+                            </select>
+                            <input name="title" maxlength="120" placeholder="Review title (optional)" class="block w-full border rounded-lg px-3 py-2 text-sm">
+                            <textarea name="description" required minlength="5" maxlength="2000" placeholder="Share your experience" class="block w-full border rounded-lg px-3 py-2 text-sm"></textarea>
+                            <button class="bg-brand text-white rounded-lg px-4 py-2 text-sm font-semibold">Submit review</button>
+                        </form>
+                    @endif
+                @endif
             @endforeach
         </div>
 

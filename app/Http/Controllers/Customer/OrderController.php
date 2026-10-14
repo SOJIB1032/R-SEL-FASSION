@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\OrderService;
+use App\Notifications\ShopOrderNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -26,7 +27,7 @@ class OrderController extends Controller
     public function show(Request $request, Order $order): View
     {
         abort_unless($order->user_id === $request->user()->id, 403);
-        $order->load('items.product.primaryImage', 'payments');
+        $order->load('items.product.primaryImage', 'items.review', 'payments');
 
         return view('customer.orders.show', compact('order'));
     }
@@ -47,6 +48,7 @@ class OrderController extends Controller
 
         try {
             $this->orderService->cancel($order, $request->user()->id);
+            $request->user()->notify(new ShopOrderNotification($order, 'Order cancelled'));
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         }

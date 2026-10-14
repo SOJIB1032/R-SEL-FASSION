@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Shop All Products - R-SELFASSION')
+@section('title', 'Shop All Products - ShopNova')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-4 gap-8">
@@ -15,6 +15,16 @@
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" @selected(request('category') == $category->id)>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
+                <h3 class="font-semibold mb-2 text-sm">Sub-category</h3>
+                <select name="sub_category" class="w-full border rounded-lg px-2 py-1.5 text-sm" onchange="this.form.submit()">
+                    <option value="">All Sub-categories</option>
+                    @foreach($subCategories as $subCategory)
+                        <option value="{{ $subCategory->id }}" @selected(request('sub_category') == $subCategory->id)>{{ $subCategory->name }}</option>
                     @endforeach
                 </select>
             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Services\InventoryService;
 use App\Services\OrderService;
+use App\Notifications\ShopOrderNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -74,9 +75,14 @@ class OrderController extends Controller
             $updates[$timestampField] = now();
         }
 
-        if ($data['status'] === 'cancelled' && ! in_array($order->status, ['cancelled', 'delivered', 'returned'], true)) {
-            $order->update($updates);
-            $this->inventoryService->restoreStockForOrder($order, auth()->id(), 'Order cancelled by admin');
+        if ($data['status'] === 'cancelled') {
+            try {
+                $this->orderService->cancel($order, auth()->id());
+            } catch (ValidationException $e) {
+                return back()->withErrors($e->errors());
+            }
+            $order->refresh();
+            $order->user?->notify(new ShopOrderNotification($order, 'Order cancelled'));
 
             return back()->with('status', 'Order cancelled and stock restored.');
         }
@@ -86,6 +92,7 @@ class OrderController extends Controller
         }
 
         $order->update($updates);
+        $order->user?->notify(new ShopOrderNotification($order, 'Order '.ucfirst($order->status)));
 
         return back()->with('status', 'Order status updated.');
     }

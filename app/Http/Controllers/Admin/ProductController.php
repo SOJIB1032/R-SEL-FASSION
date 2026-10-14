@@ -149,7 +149,18 @@ class ProductController extends Controller
             'is_best_seller' => ['nullable', 'boolean'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:255'],
+            'images' => ['nullable', 'array', 'max:8'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'variants' => ['nullable', 'array', 'max:100'],
+            'variants.*.id' => ['nullable', 'integer'],
+            'variants.*.size' => ['nullable', 'string', 'max:80'],
+            'variants.*.color' => ['nullable', 'string', 'max:80'],
+            'variants.*.sku' => ['nullable', 'string', 'max:100'],
+            'variants.*.price_adjustment' => ['nullable', 'numeric', 'min:-100000', 'max:100000'],
+            'variants.*.stock_quantity' => ['nullable', 'integer', 'min:0', 'max:1000000'],
         ]);
+
+        unset($data['images'], $data['variants']);
 
         $existing = $ignoreId ? Product::find($ignoreId) : null;
         if (! $existing || $existing->name !== $data['name']) {
@@ -195,7 +206,7 @@ class ProductController extends Controller
             $payload = [
                 'size' => $variant['size'] ?? null,
                 'color' => $variant['color'] ?? null,
-                'sku' => $variant['sku'] ?: $product->sku.'-'.Str::upper(Str::random(4)),
+                'sku' => ($variant['sku'] ?? null) ?: $product->sku.'-'.Str::upper(Str::random(4)),
                 'price_adjustment' => $variant['price_adjustment'] ?? 0,
                 'stock_quantity' => $variant['stock_quantity'] ?? 0,
                 'is_active' => true,

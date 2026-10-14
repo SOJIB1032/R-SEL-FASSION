@@ -13,6 +13,9 @@ class EnsureUserIsCustomer
         if ($request->user() && $request->user()->isAdmin()) {
             abort(403, 'Admin accounts cannot access the customer storefront actions.');
         }
+        if ($request->user() && ! $request->user()->is_active) {
+            abort(403, 'This account has been deactivated.');
+        }
 
         return $next($request);
     }

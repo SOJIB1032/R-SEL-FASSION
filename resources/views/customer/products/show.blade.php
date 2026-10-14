@@ -1,7 +1,35 @@
 @extends('layouts.app')
 
-@section('title', $product->meta_title ?? $product->name.' - R-SELFASSION')
+@section('title', $product->meta_title ?? $product->name.' - ShopNova')
 @section('meta_description', $product->meta_description ?? Str::limit(strip_tags($product->short_description), 155))
+
+@section('head')
+    <link rel="canonical" href="{{ route('products.show', $product->slug) }}">
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="{{ $product->meta_title ?? $product->name }}">
+    <meta property="og:description" content="{{ $product->meta_description ?? Str::limit(strip_tags($product->short_description), 155) }}">
+    @if($product->primaryImage)<meta property="og:image" content="{{ asset('storage/'.$product->primaryImage->path) }}">@endif
+    <script type="application/ld+json">{!! json_encode([
+        '@context' => 'https://schema.org/',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'description' => strip_tags($product->short_description ?? $product->description ?? ''),
+        'sku' => $product->sku,
+        'image' => $product->images->map(fn($image) => asset('storage/'.$image->path))->values(),
+        'offers' => [
+            '@type' => 'Offer',
+            'priceCurrency' => 'BDT',
+            'price' => number_format($product->final_price, 2, '.', ''),
+            'availability' => $product->is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+            'url' => route('products.show', $product->slug),
+        ],
+        'aggregateRating' => $product->review_count > 0 ? [
+            '@type' => 'AggregateRating',
+            'ratingValue' => $product->average_rating,
+            'reviewCount' => $product->review_count,
+        ] : null,
+    ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
+@endsection
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8">
@@ -78,6 +106,7 @@
                 <input type="hidden" name="product_variant_id" id="selected-variant-id" value="">
                 <input type="number" name="quantity" min="1" max="{{ $product->stock_quantity }}" value="1" class="w-20 border rounded-lg px-3 py-2 text-sm">
                 <button type="submit" class="flex-1 bg-brand text-white rounded-lg py-2.5 font-semibold hover:bg-brand-dark" @disabled(!$product->is_in_stock)>Add to Cart</button>
+                <button type="submit" name="action" value="buy_now" class="border border-brand text-brand rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-orange-50" @disabled(!$product->is_in_stock)>Buy Now</button>
                 @auth
                     <button type="submit" formaction="{{ route('wishlist.store', $product) }}" class="border rounded-lg px-3 py-2.5" title="Add to wishlist">♥</button>
                 @else
@@ -99,7 +128,7 @@
 
     <div class="mt-12">
         <h2 class="text-xl font-bold mb-4">Description</h2>
-        <div class="prose max-w-none text-gray-700">{!! $product->description !!}</div>
+        <div class="prose max-w-none text-gray-700">{{ $product->description }}</div>
     </div>
 
     <div class="mt-12">
@@ -129,4 +158,15 @@
         </div>
     @endif
 </div>
+
+    @if($recentlyViewedProducts->isNotEmpty())
+        <section class="mt-10">
+            <h2 class="text-xl font-bold mb-4">Recently viewed</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                @foreach($recentlyViewedProducts as $recent)
+                    <x-product-card :product="$recent" />
+                @endforeach
+            </div>
+        </section>
+    @endif
 @endsection

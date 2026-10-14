@@ -17,6 +17,7 @@ return [
     */
 
     'flat_shipping_fee' => (float) env('SHOP_SHIPPING_FEE', 60),
+    'express_shipping_surcharge' => (float) env('SHOP_EXPRESS_SHIPPING_SURCHARGE', 80),
 
     /*
     |--------------------------------------------------------------------------

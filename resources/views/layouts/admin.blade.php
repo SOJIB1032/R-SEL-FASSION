@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin - ShopNova')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { theme: { extend: { colors: { brand: { DEFAULT: '#ff5722', dark: '#e64a19' } } } } }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -16,7 +13,7 @@
 
     <aside class="w-64 bg-gray-900 text-gray-300 flex flex-col shrink-0">
         <div class="px-6 py-5 text-xl font-extrabold text-white border-b border-gray-800">
-            R-SEL<span class="text-brand">FASSION</span> <span class="text-xs font-normal text-gray-400 block">Admin Panel</span>
+            Shop<span class="text-brand">Nova</span> <span class="text-xs font-normal text-gray-400 block">Admin Panel</span>
         </div>
         <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
             @php
@@ -30,6 +27,8 @@
                     ['route' => 'admin.coupons.index', 'label' => 'Coupons', 'icon' => '🎟️'],
                     ['route' => 'admin.reviews.index', 'label' => 'Reviews', 'icon' => '⭐'],
                     ['route' => 'admin.reports.index', 'label' => 'Reports', 'icon' => '📈'],
+                    ['route' => 'admin.inventory.index', 'label' => 'Inventory', 'icon' => '📋'],
+                    ['route' => 'notifications.index', 'label' => 'Notifications ('.auth()->user()->unreadNotifications()->count().')', 'icon' => '🔔'],
                 ];
             @endphp
             @foreach($links as $link)

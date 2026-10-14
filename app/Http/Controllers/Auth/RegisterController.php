@@ -82,6 +82,7 @@ class RegisterController extends Controller
         */
 
         Auth::login($user);
+        $user->sendEmailVerificationNotification();
 
         $request->session()->regenerate();
 

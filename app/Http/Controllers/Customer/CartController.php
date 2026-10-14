@@ -44,6 +44,10 @@ class CartController extends Controller
             return back()->withErrors($e->errors());
         }
 
+        if ($request->input('action') === 'buy_now') {
+            return redirect()->route('checkout.show')->with('status', 'Sign in to complete your purchase.');
+        }
+
         return back()->with('status', "\"{$product->name}\" was added to your cart.");
     }
 
@@ -59,6 +63,16 @@ class CartController extends Controller
             return back()->withErrors($e->errors());
         }
 
+        if ($request->expectsJson()) {
+            $cart = $this->cartService->currentCart($request)->load('items');
+            return response()->json([
+                'message' => 'Cart updated.',
+                'subtotal' => $cart->subtotal,
+                'discount' => (float) $cart->coupon_discount,
+                'total' => $cart->grand_total,
+            ]);
+        }
+
         return back()->with('status', 'Cart updated.');
     }
 
@@ -66,6 +80,16 @@ class CartController extends Controller
     {
         $this->authorizeItem($request, $cartItem);
         $this->cartService->removeItem($cartItem);
+
+        if ($request->expectsJson()) {
+            $cart = $this->cartService->currentCart($request)->load('items');
+            return response()->json([
+                'message' => 'Item removed from cart.',
+                'subtotal' => $cart->subtotal,
+                'discount' => (float) $cart->coupon_discount,
+                'total' => $cart->grand_total,
+            ]);
+        }
 
         return back()->with('status', 'Item removed from cart.');
     }

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Brands - R-SELFASSION Admin')
+@section('title', 'Brands - ShopNova Admin')
 @section('page_title', 'Brands')
 
 @section('content')
@@ -33,9 +33,18 @@
                             </form>
                         </td>
                         <td class="px-4 py-3 text-right">
-                            <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" onsubmit="return confirm('Delete this brand?');">
+                            <details class="inline-block text-left">
+                                <summary class="cursor-pointer text-brand font-medium">Edit</summary>
+                                <form action="{{ route('admin.brands.update', $brand) }}" method="POST" enctype="multipart/form-data" class="mt-2 bg-white border rounded-lg p-3 w-56 space-y-2">
+                                    @csrf @method('PUT')
+                                    <input name="name" value="{{ $brand->name }}" required maxlength="255" class="w-full border rounded px-2 py-1 text-sm">
+                                    <input type="file" name="logo" accept="image/*" class="w-full text-xs">
+                                    <button class="bg-brand text-white rounded px-3 py-1 text-sm">Save changes</button>
+                                </form>
+                            </details>
+                            <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" class="inline" onsubmit="return confirm('Delete this brand?');">
                                 @csrf @method('DELETE')
-                                <button class="text-red-500 font-medium hover:underline">Delete</button>
+                                <button class="text-red-500 font-medium hover:underline ml-2">Delete</button>
                             </form>
                         </td>
                     </tr>

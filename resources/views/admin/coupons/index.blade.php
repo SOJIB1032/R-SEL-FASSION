@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Coupons - R-SELFASSION Admin')
+@section('title', 'Coupons - ShopNova Admin')
 @section('page_title', 'Coupons')
 
 @section('content')
@@ -34,9 +34,29 @@
                             </form>
                         </td>
                         <td class="px-4 py-3 text-right">
-                            <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" onsubmit="return confirm('Delete this coupon?');">
+                            <details class="inline-block text-left">
+                                <summary class="cursor-pointer text-brand font-medium">Edit</summary>
+                                <form action="{{ route('admin.coupons.update', $coupon) }}" method="POST" class="mt-2 bg-white border rounded-lg p-3 w-64 space-y-2">
+                                    @csrf @method('PUT')
+                                    <input name="code" value="{{ $coupon->code }}" required maxlength="50" class="w-full border rounded px-2 py-1 text-sm uppercase">
+                                    <select name="type" class="w-full border rounded px-2 py-1 text-sm">
+                                        <option value="percentage" @selected($coupon->type === 'percentage')>Percentage %</option>
+                                        <option value="fixed" @selected($coupon->type === 'fixed')>Fixed amount ৳</option>
+                                    </select>
+                                    <input type="number" step="0.01" min="0" name="value" value="{{ $coupon->value }}" required class="w-full border rounded px-2 py-1 text-sm">
+                                    <input type="number" step="0.01" min="0" name="min_order_amount" value="{{ $coupon->min_order_amount }}" placeholder="Minimum order" class="w-full border rounded px-2 py-1 text-sm">
+                                    <input type="number" step="0.01" min="0" name="max_discount_amount" value="{{ $coupon->max_discount_amount }}" placeholder="Maximum discount" class="w-full border rounded px-2 py-1 text-sm">
+                                    <label class="block text-xs">Starts at<input type="datetime-local" name="starts_at" value="{{ $coupon->starts_at?->format('Y-m-d\TH:i') }}" class="w-full border rounded px-2 py-1"></label>
+                                    <label class="block text-xs">Expires at<input type="datetime-local" name="expires_at" value="{{ $coupon->expires_at?->format('Y-m-d\TH:i') }}" class="w-full border rounded px-2 py-1"></label>
+                                    <input type="number" min="1" name="usage_limit" value="{{ $coupon->usage_limit }}" placeholder="Usage limit" class="w-full border rounded px-2 py-1 text-sm">
+                                    <input type="number" min="1" name="per_user_limit" value="{{ $coupon->per_user_limit }}" placeholder="Per-user limit" class="w-full border rounded px-2 py-1 text-sm">
+                                    <label class="flex items-center gap-2 text-xs"><input type="checkbox" name="is_active" value="1" @checked($coupon->is_active)> Active</label>
+                                    <button class="bg-brand text-white rounded px-3 py-1 text-sm">Save changes</button>
+                                </form>
+                            </details>
+                            <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="inline" onsubmit="return confirm('Delete this coupon?');">
                                 @csrf @method('DELETE')
-                                <button class="text-red-500 font-medium hover:underline">Delete</button>
+                                <button class="text-red-500 font-medium hover:underline ml-2">Delete</button>
                             </form>
                         </td>
                     </tr>

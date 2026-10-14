@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Your Cart - R-SELFASSION')
+@section('title', 'Your Cart - ShopNova')
 
 @section('content')
 <div class="max-w-5xl mx-auto px-4 py-8">
@@ -84,4 +84,30 @@
         </div>
     @endif
 </div>
+@push('scripts')
+<script>
+document.querySelectorAll('form[action*="/cart/items/"]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const button = form.querySelector('button');
+        if (button) button.disabled = true;
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: new URLSearchParams(new FormData(form)),
+            });
+            if (!response.ok) throw new Error('Cart update failed');
+            window.location.reload();
+        } catch (error) {
+            form.submit();
+        }
+    });
+});
+</script>
+@endpush
 @endsection
