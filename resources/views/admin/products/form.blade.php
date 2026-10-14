@@ -95,24 +95,55 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
-            <h2 class="font-semibold">Images</h2>
-            @if($product->exists && $product->images->isNotEmpty())
-                <div class="flex flex-wrap gap-3 mb-3">
-                    @foreach($product->images as $image)
-                        <div class="relative w-20 h-20">
-                            <img src="{{ asset('storage/'.$image->path) }}" class="w-full h-full object-cover rounded-lg border {{ $image->is_primary ? 'border-brand border-2' : '' }}">
-                            <form action="{{ route('admin.products.images.destroy', $image) }}" method="POST" class="absolute -top-2 -right-2">
-                                @csrf @method('DELETE')
-                                <button class="bg-red-500 text-white rounded-full w-5 h-5 text-xs">✕</button>
-                            </form>
-                        </div>
-                    @endforeach
+       <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+    <h2 class="font-semibold">Images</h2>
+
+    @if($product->exists && $product->images->isNotEmpty())
+        <div class="flex flex-wrap gap-3 mb-3">
+
+            @foreach($product->images as $image)
+                <div class="relative w-24 h-24">
+
+                    <img
+                        src="{{ asset('storage/' . $image->path) }}"
+                        alt="{{ $product->name }}"
+                        class="w-full h-full object-cover rounded-lg border
+                        {{ $image->is_primary ? 'border-brand border-2' : '' }}"
+                    >
+
+                    @if($image->is_primary)
+                        <span class="absolute bottom-1 left-1 bg-brand text-white text-[10px] px-1.5 py-0.5 rounded">
+                            Primary
+                        </span>
+                    @endif
+
+                    <button
+                        type="button"
+                        onclick="deleteProductImage({{ $image->id }})"
+                        class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center"
+                        title="Delete image"
+                    >
+                        ✕
+                    </button>
+
                 </div>
-            @endif
-            <input type="file" name="images[]" accept="image/*" multiple class="w-full border rounded-lg px-3 py-2 text-sm">
-            <p class="text-xs text-gray-400">First uploaded image becomes the primary image if none is set yet.</p>
+            @endforeach
+
         </div>
+    @endif
+
+    <input
+        type="file"
+        name="images[]"
+        accept="image/*"
+        multiple
+        class="w-full border rounded-lg px-3 py-2 text-sm"
+    >
+
+    <p class="text-xs text-gray-400">
+        You can select multiple images. The first uploaded image becomes the primary image if no primary image exists.
+    </p>
+</div>
 
         <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
             <div class="flex items-center justify-between">
@@ -192,3 +223,34 @@
     });
 </script>
 @endsection
+<script>
+    function deleteProductImage(imageId) {
+
+        if (!confirm('Are you sure you want to delete this image?')) {
+            return;
+        }
+
+        fetch(`/admin/products/images/${imageId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete image');
+            }
+
+            return response.json().catch(() => ({}));
+        })
+        .then(() => {
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error(error);
+            alert('Could not delete the image.');
+        });
+    }
+</script>

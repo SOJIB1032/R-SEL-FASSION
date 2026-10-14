@@ -36,45 +36,120 @@ class CartService
     /**
      * Merge a guest session cart into the user's cart at login time.
      */
-    public function mergeGuestCartIntoUser(Request $request, $user): void
-    {
-        $token = $request->session()->get(self::SESSION_KEY);
+   public function mergeGuestCartIntoUser(Request $request, $user): void
+{
+    $token = $request->session()->get(self::SESSION_KEY);
 
-        if (! $token) {
-            return;
+    if (! $token) {
+        return;
+    }
+
+    $guestCart = Cart::with('items')
+        ->where('session_token', $token)
+        ->whereNull('user_id')
+        ->first();
+
+    if (! $guestCart || $guestCart->items->isEmpty()) {
+        $request->session()->forget(self::SESSION_KEY);
+
+        return;
+    }
+
+    $userCart = Cart::firstOrCreate([
+        'user_id' => $user->id,
+    ]);
+
+    foreach ($guestCart->items as $guestItem) {
+        $existing = CartItem::where('cart_id', $userCart->id)
+            ->where('product_id', $guestItem->product_id)
+            ->where('product_variant_id', $guestItem->product_variant_id)
+            ->first();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Find current product and variant
+        |--------------------------------------------------------------------------
+        */
+
+        $product = Product::find($guestItem->product_id);
+
+        if (! $product || $product->status !== 'active') {
+            continue;
         }
 
-        $guestCart = Cart::where('session_token', $token)->whereNull('user_id')->first();
+        $variant = null;
 
-        if (! $guestCart) {
-            return;
-        }
-
-        $userCart = Cart::firstOrCreate(['user_id' => $user->id]);
-
-        foreach ($guestCart->items as $guestItem) {
-            $existing = CartItem::where('cart_id', $userCart->id)
-                ->where('product_id', $guestItem->product_id)
-                ->where('product_variant_id', $guestItem->product_variant_id)
+        if ($guestItem->product_variant_id) {
+            $variant = ProductVariant::where('id', $guestItem->product_variant_id)
+                ->where('product_id', $product->id)
+                ->where('is_active', true)
                 ->first();
 
-            if ($existing) {
-                $existing->increment('quantity', $guestItem->quantity);
-            } else {
-                CartItem::create([
-                    'cart_id' => $userCart->id,
-                    'product_id' => $guestItem->product_id,
-                    'product_variant_id' => $guestItem->product_variant_id,
-                    'quantity' => $guestItem->quantity,
-                    'unit_price' => $guestItem->unit_price,
-                ]);
+            if (! $variant) {
+                continue;
             }
         }
 
-        $guestCart->items()->delete();
-        $guestCart->delete();
-        $request->session()->forget(self::SESSION_KEY);
+        /*
+        |--------------------------------------------------------------------------
+        | Available stock
+        |--------------------------------------------------------------------------
+        */
+
+        $availableStock = $variant
+            ? $variant->stock_quantity
+            : $product->stock_quantity;
+
+        $currentQuantity = $existing?->quantity ?? 0;
+
+        $newQuantity = min(
+            $currentQuantity + $guestItem->quantity,
+            $availableStock
+        );
+
+        if ($newQuantity <= 0) {
+            continue;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Use current server-side price
+        |--------------------------------------------------------------------------
+        */
+
+        $unitPrice = $product->final_price
+            + ($variant?->price_adjustment ?? 0);
+
+        if ($existing) {
+            $existing->update([
+                'quantity' => $newQuantity,
+                'unit_price' => $unitPrice,
+            ]);
+        } else {
+            CartItem::create([
+                'cart_id' => $userCart->id,
+                'product_id' => $product->id,
+                'product_variant_id' => $variant?->id,
+                'quantity' => min(
+                    $guestItem->quantity,
+                    $availableStock
+                ),
+                'unit_price' => $unitPrice,
+            ]);
+        }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete guest cart
+    |--------------------------------------------------------------------------
+    */
+
+    $guestCart->items()->delete();
+    $guestCart->delete();
+
+    $request->session()->forget(self::SESSION_KEY);
+}
 
     public function addItem(Cart $cart, Product $product, ?ProductVariant $variant, int $quantity): CartItem
     {

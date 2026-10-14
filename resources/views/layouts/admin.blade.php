@@ -40,7 +40,7 @@
             @endforeach
         </nav>
         <div class="px-4 py-4 border-t border-gray-800 text-xs">
-            <a href="{{ route('home') }}" class="hover:text-white block mb-2">← Back to storefront</a>
+            <a href="{{ route('home') }}" target="_blank" class="hover:text-white block mb-2">← view website</a>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button class="hover:text-white">Logout ({{ auth()->user()->name }})</button>
