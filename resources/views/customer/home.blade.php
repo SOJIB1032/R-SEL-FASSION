@@ -29,7 +29,40 @@
             </div>
         </section>
         @endif
+        
+@if($flashSaleProducts->isNotEmpty())
+    <section class="border border-orange-200 bg-orange-50 rounded-2xl p-5 md:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-orange-600">
+                    Limited Time Offer
+                </span>
+                <h2 class="text-2xl font-extrabold text-gray-900">
+                    ⚡ Flash Sale
+                </h2>
+                <p class="text-sm text-gray-600 mt-1">
+                    Grab these deals before they expire.
+                </p>
+            </div>
 
+            <span class="text-sm font-semibold text-orange-700">
+                Ends soon
+            </span>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @foreach($flashSaleProducts as $product)
+                <div class="relative">
+                    <span class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                        FLASH SALE
+                    </span>
+
+                    <x-product-card :product="$product" />
+                </div>
+            @endforeach
+        </div>
+    </section>
+@endif
         @foreach([['Featured Products', $featured], ['New Arrivals', $newArrivals], ['Best Sellers', $bestSellers], ['On Sale', $onSale]] as [$title, $items])
             @if($items->count())
                 <section>

@@ -66,7 +66,7 @@
 
             <div class="flex items-baseline gap-3 mb-4">
                 <span class="text-3xl font-extrabold text-brand">৳{{ number_format($product->final_price, 2) }}</span>
-                @if($product->discount_price)
+                @if((float) $product->final_price < (float) $product->price)
                     <span class="text-lg text-gray-400 line-through">৳{{ number_format($product->price, 2) }}</span>
                 @endif
             </div>

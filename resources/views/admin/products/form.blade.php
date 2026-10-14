@@ -76,6 +76,23 @@
                     <label class="block text-sm font-medium mb-1">Discount Price (৳)</label>
                     <input type="number" step="0.01" name="discount_price" value="{{ old('discount_price', $product->discount_price) }}" class="w-full border rounded-lg px-3 py-2">
                 </div>
+               <div class="border border-orange-200 bg-orange-50 rounded-lg p-4 space-y-3">
+                    <h3 class="font-semibold text-orange-800">Flash Sale Settings </h3>
+                    <div>
+                      <label class="block text-sm font-medium mb-1">Flash Sale Price (৳)</label>
+                      <input type="number" step="0.01" min="0" name="flash_sale_price" value="{{ old('flash_sale_price', $product->flash_sale_price) }}" class="w-full border rounded-lg px-3 py-2" >
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1"> Start Date & Time </label>
+                      <input type="datetime-local" name="flash_sale_starts_at" value="{{ old('flash_sale_starts_at', optional($product->flash_sale_starts_at)->format('Y-m-d\TH:i')) }}" class="w-full border rounded-lg px-3 py-2">
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-1"> End Date & Time </label>
+                      <input type="datetime-local" name="flash_sale_ends_at" value="{{ old('flash_sale_ends_at', optional($product->flash_sale_ends_at)->format('Y-m-d\TH:i')) }}"class="w-full border rounded-lg px-3 py-2">
+                    </div>
+                   <p class="text-xs text-orange-700"> Leave all fields empty to disable the flash sale. 
+                    The sale price applies only during the configured period.</p>
+                </div>
                 <div>
                     <label class="block text-sm font-medium mb-1">Stock Quantity</label>
                     <input type="number" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity ?? 0) }}" required class="w-full border rounded-lg px-3 py-2">

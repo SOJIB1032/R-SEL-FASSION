@@ -13,7 +13,7 @@
 
     <div class="mt-1 flex items-center gap-2">
         <span class="text-brand font-bold">৳{{ number_format($product->final_price, 2) }}</span>
-        @if($product->discount_price)
+        @if((float) $product->final_price < (float) $product->price)
             <span class="text-xs text-gray-400 line-through">৳{{ number_format($product->price, 2) }}</span>
         @endif
     </div>

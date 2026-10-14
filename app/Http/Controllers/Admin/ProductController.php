@@ -158,6 +158,9 @@ class ProductController extends Controller
             'variants.*.sku' => ['nullable', 'string', 'max:100'],
             'variants.*.price_adjustment' => ['nullable', 'numeric', 'min:-100000', 'max:100000'],
             'variants.*.stock_quantity' => ['nullable', 'integer', 'min:0', 'max:1000000'],
+            'flash_sale_price' => ['nullable','numeric','min:0','lt:price',],
+            'flash_sale_starts_at' => ['nullable','date',],
+            'flash_sale_ends_at' => ['nullable','date','after:flash_sale_starts_at',],
         ]);
 
         unset($data['images'], $data['variants']);
