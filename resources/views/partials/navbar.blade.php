@@ -5,7 +5,7 @@
 
             <form action="{{ route('products.index') }}" method="GET" class="hidden md:flex flex-1 max-w-xl">
                 <input type="text" name="q" value="{{ request('q') }}" placeholder="Search products, brands..."
-                       class="w-full border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                       class="w-full border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-black px-4 rounded-r-lg">Search</button>
             </form>
 
@@ -24,7 +24,7 @@
                 <a href="{{ route('cart.show') }}" class="relative hover:text-brand" title="Cart">
                     🛒 Cart
                     @if($cartCount > 0)
-                        <span class="absolute -top-2 -right-3 bg-brand-600 text-black text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{{ $cartCount }}</span>
+                        <span class="absolute -top-2 -right-3 bg-blue-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{{ $cartCount }}</span>
                     @endif
                 </a>
 

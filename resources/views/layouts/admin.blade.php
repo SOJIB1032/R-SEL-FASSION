@@ -6,9 +6,10 @@
     <title>@yield('title', 'Admin - ShopNova')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+   
 </head>
 <body class="bg-gray-100 text-gray-800">
+    
 <div class="flex min-h-screen">
 
     <aside class="w-64 bg-gray-900 text-gray-300 flex flex-col shrink-0">
@@ -66,5 +67,6 @@
         </div>
     </main>
 </div>
+
 </body>
 </html>

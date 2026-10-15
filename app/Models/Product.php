@@ -32,6 +32,8 @@ class Product extends Model
         'flash_sale_price',
         'flash_sale_starts_at',
         'flash_sale_ends_at',
+        'average_rating',
+        'review_count',
     ];
 
     protected function casts(): array

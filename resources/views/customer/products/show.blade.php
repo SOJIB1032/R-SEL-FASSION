@@ -23,10 +23,10 @@
             'availability' => $product->is_in_stock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
             'url' => route('products.show', $product->slug),
         ],
-        'aggregateRating' => $product->review_count > 0 ? [
+        'aggregateRating' => $product->approvedReviews->count() > 0 ? [
             '@type' => 'AggregateRating',
-            'ratingValue' => $product->average_rating,
-            'reviewCount' => $product->review_count,
+            'ratingValue' => $product->approvedReviews->avg('rating'),
+            'reviewCount' => $product->approvedReviews->count(),
         ] : null,
     ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) !!}</script>
 @endsection
@@ -60,8 +60,8 @@
             <p class="text-sm text-gray-500 mb-3">SKU: {{ $product->sku }} &bull; Brand: {{ $product->brand->name ?? 'N/A' }}</p>
 
             <div class="flex items-center gap-2 mb-4">
-                <span class="text-yellow-500">⭐ {{ number_format($product->average_rating, 1) }}</span>
-                <span class="text-sm text-gray-500">({{ $product->review_count }} reviews)</span>
+                <span class="text-yellow-500">⭐ {{ number_format($product->approvedReviews->avg('rating'), 1) }}</span>
+                <span class="text-sm text-gray-500">({{ $product->approvedReviews->count() }} reviews)</span>
             </div>
 
             <div class="flex items-baseline gap-3 mb-4">
@@ -86,7 +86,7 @@
                     <h3 class="text-sm font-semibold mb-2">Select Variant</h3>
                     <div class="flex flex-wrap gap-2" id="variant-options">
                         @foreach($product->variants as $variant)
-                            <button type="button" class="variant-btn border rounded-lg px-3 py-1.5 text-sm hover:border-brand" data-variant-id="{{ $variant->id }}">
+                            <button type="button" class="variant-btn border rounded-lg px-3 py-1.5 text-black bg-[#DDE3E8] hover:border-brand" data-variant-id="{{ $variant->id }}">
                                 {{ $variant->label }}
                             </button>
                         @endforeach
@@ -105,8 +105,8 @@
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="product_variant_id" id="selected-variant-id" value="">
                 <input type="number" name="quantity" min="1" max="{{ $product->stock_quantity }}" value="1" class="w-20 border rounded-lg px-3 py-2 text-sm">
-                <button type="submit" class="flex-1 bg-brand text-white rounded-lg py-2.5 font-semibold hover:bg-brand-dark" @disabled(!$product->is_in_stock)>Add to Cart</button>
-                <button type="submit" name="action" value="buy_now" class="border border-brand text-brand rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-orange-50" @disabled(!$product->is_in_stock)>Buy Now</button>
+                <button type="submit" class="flex-1 bg-blue-600 text-white rounded-lg py-2.5 font-semibold hover:bg-blue-700" @disabled(!$product->is_in_stock)>Add to Cart</button>
+                <button type="submit" name="action" value="buy_now" class="border border-blue-600 text-blue-600 rounded-lg px-3 py-2.5 text-sm font-semibold hover:bg-blue-100" @disabled(!$product->is_in_stock)>Buy Now</button>
                 @auth
                     <button type="submit" formaction="{{ route('wishlist.store', $product) }}" class="border rounded-lg px-3 py-2.5" title="Add to wishlist">♥</button>
                 @else
@@ -132,7 +132,7 @@
     </div>
 
     <div class="mt-12">
-        <h2 class="text-xl font-bold mb-4">Customer Reviews ({{ $product->review_count }})</h2>
+        <h2 class="text-xl font-bold mb-4">Customer Reviews ({{ $product->approvedReviews->count() }})</h2>
         @forelse($product->approvedReviews as $review)
             <div class="border-b py-4">
                 <div class="flex items-center gap-2 mb-1">

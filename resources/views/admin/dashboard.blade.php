@@ -53,40 +53,78 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof window.Chart === 'undefined') {
+        console.error('Chart.js is not loaded. Check resources/js/app.js and Vite build.');
+        return;
+    }
+
     const brand = '#ff5722';
 
-    new Chart(document.getElementById('salesOverviewChart'), {
+    new window.Chart(document.getElementById('salesOverviewChart'), {
         type: 'line',
         data: {
             labels: @json($salesLabels),
-            datasets: [{ label: 'Revenue', data: @json($salesData), borderColor: brand, backgroundColor: 'rgba(255,87,34,0.1)', fill: true, tension: 0.3 }]
+            datasets: [{
+                label: 'Revenue',
+                data: @json($salesData),
+                borderColor: brand,
+                backgroundColor: 'rgba(255,87,34,0.1)',
+                fill: true,
+                tension: 0.3
+            }]
         },
-        options: { plugins: { legend: { display: false } } }
+        options: {
+            plugins: {
+                legend: { display: false }
+            }
+        }
     });
 
-    new Chart(document.getElementById('monthlyRevenueChart'), {
+    new window.Chart(document.getElementById('monthlyRevenueChart'), {
         type: 'bar',
         data: {
             labels: @json($monthLabels),
-            datasets: [{ label: 'Revenue', data: @json($monthData), backgroundColor: brand }]
+            datasets: [{
+                label: 'Revenue',
+                data: @json($monthData),
+                backgroundColor: brand
+            }]
         },
-        options: { plugins: { legend: { display: false } } }
+        options: {
+            plugins: {
+                legend: { display: false }
+            }
+        }
     });
 
-    new Chart(document.getElementById('ordersByStatusChart'), {
+    new window.Chart(document.getElementById('ordersByStatusChart'), {
         type: 'doughnut',
         data: {
             labels: @json($ordersByStatus->keys()),
-            datasets: [{ data: @json($ordersByStatus->values()), backgroundColor: ['#facc15','#60a5fa','#818cf8','#34d399','#4ade80','#f87171','#9ca3af'] }]
+            datasets: [{
+                data: @json($ordersByStatus->values()),
+                backgroundColor: [
+                    '#facc15', '#60a5fa', '#818cf8',
+                    '#34d399', '#4ade80', '#f87171', '#9ca3af'
+                ]
+            }]
         }
     });
 
-    new Chart(document.getElementById('salesByCategoryChart'), {
+    new window.Chart(document.getElementById('salesByCategoryChart'), {
         type: 'pie',
         data: {
             labels: @json($salesByCategory->pluck('category')),
-            datasets: [{ data: @json($salesByCategory->pluck('total')), backgroundColor: ['#ff5722','#facc15','#60a5fa','#818cf8','#34d399','#f87171'] }]
+            datasets: [{
+                data: @json($salesByCategory->pluck('total')),
+                backgroundColor: [
+                    '#ff5722', '#facc15', '#60a5fa',
+                    '#818cf8', '#34d399', '#f87171'
+                ]
+            }]
         }
     });
+});
 </script>
 @endsection
