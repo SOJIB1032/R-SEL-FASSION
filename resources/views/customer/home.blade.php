@@ -3,14 +3,62 @@
 @section('title', 'R-SELFASSION - Shop Smarter, Live Better')
 
 @section('content')
-    <section class="bg-gradient-to-r from-brand to-orange-400 text-white">
+    <section style="background-color: #B8CCDF; color: #212529;" class=" text-white">
         <div class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-2 items-center gap-8">
             <div>
-                <h1 class="text-4xl font-extrabold mb-4">Everything you need, delivered fast.</h1>
-                <p class="mb-6 text-orange-50">Discover thousands of products across every category, at prices that make sense.</p>
-                <a href="{{ route('products.index') }}" class="bg-white text-brand font-semibold px-6 py-3 rounded-lg hover:bg-orange-50">Shop Now</a>
+                <h1 class="text-4xl font-extrabold mb-4"> Redefine Your Style. <br>  <span class="text-blue-900">Wear Your Confidence.</span></h1>
+                <p class="mb-6 text-black">Discover thousands of products across every category, at prices that make sense.</p>
+                <div class="mb-6">
+<!-- add icon section here -->
+<div class="flex items-center justify-start gap-0 mt-4 text-center">
+
+    <!-- Fast Delivery -->
+    <div class="flex flex-col items-center justify-center px-3 py-1 border-r border-gray-300">
+        <i class="fa-solid fa-truck-fast text-blue-900 text-lg mb-1"></i>
+        <span class="text-xs text-gray-800 leading-tight">
+            Fast<br>Delivery
+        </span>
+    </div>
+
+    <!-- Secure Payment -->
+    <div class="flex flex-col items-center justify-center px-3 py-1 border-r border-gray-300">
+        <i class="fa-solid fa-shield-halved text-blue-900 text-lg mb-1"></i>
+        <span class="text-xs text-gray-800 leading-tight">
+            Secure<br>Payment
+        </span>
+    </div>
+
+    <!-- Easy Returns -->
+    <div class="flex flex-col items-center justify-center px-3 py-1 border-r border-gray-300">
+        <i class="fa-solid fa-rotate text-blue-900 text-lg mb-1"></i>
+        <span class="text-xs text-gray-800 leading-tight">
+            Easy<br>Returns
+        </span>
+    </div>
+
+    <!-- 24/7 Support -->
+    <div class="flex flex-col items-center justify-center px-3 py-1">
+        <i class="fa-solid fa-headset text-blue-900 text-lg mb-1"></i>
+        <span class="text-xs text-gray-800 leading-tight">
+            24/7<br>Support
+        </span>
+    </div>
+
+</div>
+<!-- close icon section -->
+                </div>
+             
+<a href="{{ route('products.index') }}"
+   class="inline-flex items-center gap-3 bg-blue-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-blue-800 hover:shadow-lg transition-all duration-300">
+    Shop Now
+    <i class="fa-solid fa-arrow-right"></i>
+</a>
+
             </div>
-            <div class="hidden md:block bg-white/10 rounded-xl h-56"></div>
+            <div class="hidden md:block bg-white/10 rounded-xl h-56">
+                <img src="{{ asset('images/R-SELFASSION Fashion Banner.png') }}" alt="ShopNova Banner" class="object-cover w-full h-full rounded-xl">
+                
+            </div>
         </div>
     </section>
 

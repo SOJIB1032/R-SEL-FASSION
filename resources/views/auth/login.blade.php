@@ -28,7 +28,7 @@
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" name="remember"> Remember me
             </label>
-            <button type="submit" class="w-full bg-brand text-white rounded-lg py-2.5 font-semibold hover:bg-brand-dark">Login</button>
+            <button type="submit" class="w-full bg-blue-600 text-black rounded-lg py-2.5 font-semibold hover:bg-blue-700">Login</button>
         </form>
 
         <p class="text-sm text-center mt-6 text-gray-500">

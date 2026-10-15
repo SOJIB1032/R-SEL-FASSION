@@ -40,7 +40,7 @@
                 <input type="password" name="password_confirmation" required
                        class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand focus:outline-none">
             </div>
-            <button type="submit" class="w-full bg-brand text-white rounded-lg py-2.5 font-semibold hover:bg-brand-dark">Create Account</button>
+            <button type="submit" class="w-full bg-blue-600 text-white rounded-lg py-2.5 font-semibold hover:bg-blue-900">Create Account</button>
         </form>
 
         <p class="text-sm text-center mt-6 text-gray-500">

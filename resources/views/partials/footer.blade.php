@@ -22,8 +22,8 @@
             <h4 class="text-white font-semibold mb-3">Newsletter</h4>
             <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex">
                 @csrf
-                <input type="email" name="email" required maxlength="255" placeholder="Your email" class="w-full min-w-0 rounded-l-lg px-3 py-2 text-gray-900 text-sm focus:outline-none">
-                <button type="submit" class="bg-brand px-3 rounded-r-lg text-white text-sm">Join</button>
+                <input type="email" name="email" required maxlength="255" placeholder="Your email" class="w-full min-w-0 rounded-l-lg px-3 py-2 border border-gray-300 text-black text-sm focus:outline-none">
+                <button type="submit" class="bg-brand-600 text-white text-sm px-3 rounded-r-lg">Join</button>
             </form>
             @error('email')<p class="text-red-300 text-xs mt-2">{{ $message }}</p>@enderror
         </div>
